@@ -91,16 +91,17 @@ func (sig *codeInjection) OnEvent(event protocol.Event) error {
 		if err != nil {
 			return err
 		}
-		requestString := request.Value.(string)
-		if requestString == "PTRACE_POKETEXT" || requestString == "PTRACE_POKEDATA" {
-			sig.cb(&detect.Finding{
-				// Signature: sig,
-				SigMetadata: sig.metadata,
-				Event:       event,
-				Data: map[string]interface{}{
-					"ptrace request": requestString,
-				},
-			})
+		if requestString, ok := request.Value.(string); ok {
+			if requestString == "PTRACE_POKETEXT" || requestString == "PTRACE_POKEDATA" {
+				sig.cb(&detect.Finding{
+					// Signature: sig,
+					SigMetadata: sig.metadata,
+					Event:       event,
+					Data: map[string]interface{}{
+						"ptrace request": requestString,
+					},
+				})
+			}
 		}
 		// TODO Commenting out the execve case to make it equivalent to Rego signature
 		//

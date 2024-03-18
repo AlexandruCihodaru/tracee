@@ -14,7 +14,11 @@ func TestContextFilterClone(t *testing.T) {
 	err := filter.Parse("openat.context.processorId", "=0")
 	require.NoError(t, err)
 
-	copy := filter.Clone().(*ContextFilter)
+	cloneInterface := filter.Clone()
+	copy, ok := cloneInterface.(*ContextFilter)
+	if !ok {
+		t.Errorf("Clone did not return an *ContextFilter")
+	}
 
 	if !reflect.DeepEqual(filter, copy) {
 		t.Errorf("Clone did not produce an identical copy")

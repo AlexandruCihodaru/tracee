@@ -182,7 +182,9 @@ func (filter *ArgFilter) Clone() utils.Cloner {
 	for eventID, filterMap := range filter.filters {
 		n.filters[eventID] = map[string]Filter{}
 		for argName, f := range filterMap {
-			n.filters[eventID][argName] = f.Clone().(Filter)
+			if n.filters[eventID][argName], ok = cloneAndAssert[Filter](f); !ok {
+				return nil, err
+			}
 		}
 	}
 

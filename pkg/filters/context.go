@@ -277,7 +277,7 @@ func (f *eventCtxFilter) addContainer(filter Filter, operatorAndValues string) e
 	return nil
 }
 
-func (f *eventCtxFilter) Clone() utils.Cloner {
+func (f *eventCtxFilter) Clone() (utils.Cloner, error) {
 	if f == nil {
 		return nil
 	}
@@ -285,30 +285,78 @@ func (f *eventCtxFilter) Clone() utils.Cloner {
 	n := &eventCtxFilter{}
 
 	n.enabled = f.enabled
-	n.timestampFilter = f.timestampFilter.Clone().(*IntFilter[int64])
-	n.processorIDFilter = f.processorIDFilter.Clone().(*IntFilter[int64])
-	n.pidFilter = f.pidFilter.Clone().(*IntFilter[int64])
-	n.tidFilter = f.tidFilter.Clone().(*IntFilter[int64])
-	n.ppidFilter = f.ppidFilter.Clone().(*IntFilter[int64])
-	n.hostPidFilter = f.hostPidFilter.Clone().(*IntFilter[int64])
-	n.hostTidFilter = f.hostTidFilter.Clone().(*IntFilter[int64])
-	n.hostPpidFilter = f.hostPpidFilter.Clone().(*IntFilter[int64])
-	n.uidFilter = f.uidFilter.Clone().(*IntFilter[int64])
-	n.mntNSFilter = f.mntNSFilter.Clone().(*IntFilter[int64])
-	n.pidNSFilter = f.pidNSFilter.Clone().(*IntFilter[int64])
-	n.processNameFilter = f.processNameFilter.Clone().(*StringFilter)
-	n.hostNameFilter = f.hostNameFilter.Clone().(*StringFilter)
-	n.cgroupIDFilter = f.cgroupIDFilter.Clone().(*UIntFilter[uint64])
-	n.containerFilter = f.containerFilter.Clone().(*BoolFilter)
-	n.containerIDFilter = f.containerIDFilter.Clone().(*StringFilter)
-	n.containerImageFilter = f.containerImageFilter.Clone().(*StringFilter)
-	n.containerImageDigestFilter = f.containerImageDigestFilter.Clone().(*StringFilter)
-	n.containerNameFilter = f.containerNameFilter.Clone().(*StringFilter)
-	n.podNameFilter = f.podNameFilter.Clone().(*StringFilter)
-	n.podNSFilter = f.podNSFilter.Clone().(*StringFilter)
-	n.podUIDFilter = f.podUIDFilter.Clone().(*StringFilter)
-	n.podSandboxFilter = f.podSandboxFilter.Clone().(*BoolFilter)
-	n.syscallFilter = f.syscallFilter.Clone().(*StringFilter)
+	if n.timestampFilter, err := cloneAndAssert[*IntFilter[int64]](f.timestampFilter); err != nil {
+		return err
+	}
+	if n.processorIDFilter, err := cloneAndAssert[*IntFilter[int64]](f.processorIDFilter); err != nil {
+		return err
+	}
+	if n.pidFilter, err := cloneAndAssert[*IntFilter[int64]](f.pidFilter); err != nil {
+		return err
+	}
+	if n.tidFilter, err := cloneAndAssert[*IntFilter[int64]](f.tidFilter); err != nil {
+		return err
+	}
+	if n.ppidFilter, err := cloneAndAssert[*IntFilter[int64]](f.ppidFilter); err != nil {
+		return err
+	}
+	if n.hostPidFilter, err := cloneAndAssert[*IntFilter[int64]](f.hostPidFilter); err != nil {
+		return err
+	}
+	if n.hostTidFilter, err := cloneAndAssert[*IntFilter[int64]](f.hostTidFilter); err != nil {
+		return err
+	}
+	if n.hostPpidFilter, err := cloneAndAssert[*IntFilter[int64]](f.hostPpidFilter); err != nil {
+		return err
+	}
+	if n.uidFilter, err := cloneAndAssert[*IntFilter[int64]](f.uidFilter); err != nil {
+		return err
+	}
+	if n.mntNSFilter, err := cloneAndAssert[*IntFilter[int64]](f.mntNSFilter); err != nil {
+		return err
+	}
+	if n.pidNSFilter, err := cloneAndAssert[*IntFilter[int64]](f.pidNSFilter); err != nil {
+		return err
+	}
+	if n.processNameFilter, err := cloneAndAssert[*StringFilter](f.processNameFilter); err != nil {
+		return err
+	}
+	if n.hostNameFilter, err := cloneAndAssert[*StringFilter](f.hostNameFilter); err != nil {
+		return err
+	}
+	if n.cgroupIDFilter, err := cloneAndAssert[*UIntFilter[uint64]](f.cgroupIDFilter); err != nil {
+		return err
+	}
+	if n.containerFilter, err := cloneAndAssert[*BoolFilter](f.containerFilter); err != nil {
+		return err
+	}
+	if n.containerIdFilter, err := cloneAndAssert[*StringFilter](f.containerIdFilter); err != nil {
+		return err
+	}
+	if n.containerImageFilter, err := cloneAndAssert[*StringFilter](f.containerImageFilter); err != nil {
+		return err
+	}
+	if n.containerImageDigestFilter, err := cloneAndAssert[*StringFilter](f.containerImageDigestFilter); err != nil {
+		return err
+	}
+	if n.containerNameFilter, err := cloneAndAssert[*StringFilter](f.containerNameFilter); err != nil {
+		return err
+	}
+	if n.podNameFilter, err := cloneAndAssert[*StringFilter](f.podNameFilter); err != nil {
+		return err
+	}
+	if n.podNSFilter, err := cloneAndAssert[*StringFilter](f.podNSFilter); err != nil {
+		return err
+	}
+	if n.podUIDFilter, err := cloneAndAssert[*StringFilter](f.podUIDFilter); err != nil {
+		return err
+	}
+	if n.podSandboxFilter, err := cloneAndAssert[*BoolFilter](f.podSandboxFilter); err != nil {
+		return err
+	}
+	if n.syscallFilter, err := cloneAndAssert[*StringFilter](f.syscallFilter); err != nil {
+		return err
+	}
 
 	return n
 }

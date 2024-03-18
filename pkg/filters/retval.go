@@ -93,7 +93,9 @@ func (filter *RetFilter) Clone() utils.Cloner {
 	n := NewRetFilter()
 
 	for k, v := range filter.filters {
-		n.filters[k] = v.Clone().(*IntFilter[int64])
+		if n.filters[k], err = cloneAndAssert[*IntFilter[int64]](v); err != nil {
+			return nil, err
+		}
 	}
 	n.enabled = filter.enabled
 

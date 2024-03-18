@@ -16,7 +16,11 @@ func TestArgsFilterClone(t *testing.T) {
 	err := filter.Parse("read.args.fd", "=argval", events.Core.NamesToIDs())
 	require.NoError(t, err)
 
-	copy := filter.Clone().(*ArgFilter)
+	cloneInterface = filter.Clone()
+	copy, ok := cloneInterface.(*ArgFilter)
+	if !ok {
+		t.Fatal("Clone did not return an *ArgFilter")
+	}
 
 	if !reflect.DeepEqual(filter, copy) {
 		t.Errorf("Clone did not produce an identical copy")

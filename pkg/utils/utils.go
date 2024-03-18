@@ -13,6 +13,17 @@ type Cloner interface {
 	Clone() Cloner
 }
 
+func cloneAndAssert[T any](cloner utils.Cloner) (T, error) {
+	if cloner == nil {
+		return nil
+	}
+    cloneInterface := cloner.Clone()
+    if result, ok := cloneInterface.(T); ok {
+		return result, nil
+	}
+    return nil, fmt.Errorf("Clone() returned an object of unexpected type")
+}
+
 func ParseSymbol(address uint64, table *helpers.KernelSymbolTable) helpers.KernelSymbol {
 	var hookingFunction helpers.KernelSymbol
 

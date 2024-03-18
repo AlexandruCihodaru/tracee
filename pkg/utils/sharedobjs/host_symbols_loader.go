@@ -92,8 +92,9 @@ type dynamicSymbolsLRUCache struct {
 func (soCache *dynamicSymbolsLRUCache) Get(objID ObjID) (*dynamicSymbols, bool) {
 	objInfoIface, ok := soCache.lru.Get(objID)
 	if ok {
-		objInfo := objInfoIface.(*dynamicSymbols)
-		return objInfo, true
+		if objInfo, ok := objInfoIface.(*dynamicSymbols); ok {
+			return objInfo, true
+		}
 	}
 
 	return nil, false

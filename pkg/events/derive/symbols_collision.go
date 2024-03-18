@@ -320,8 +320,7 @@ func (socCache collisionChecksCache) getObjCollisionsAndCollisionKey(
 		obj1: obj1, // compare obj1 to obj2
 		obj2: obj2,
 	}
-	collisionsIface, ok := socCache.cache.Get(key)
-	if !ok {
+	collisionsIface, ok := socCache.cache.Get(key); !ok {
 		key = collisionsKey{ // try comparing obj2 to obj1
 			obj1: obj2,
 			obj2: obj1,

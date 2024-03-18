@@ -205,7 +205,12 @@ func TestStringFilterClone(t *testing.T) {
 	err = filter.Parse("!=abc")
 	assert.NoError(t, err)
 
-	copy := filter.Clone().(*StringFilter)
+	cloneInterface := filter.Clone()
+	copy, ok := cloneInterface.(*StringFilter)
+	if !ok {
+		t.Errorf("Clone did not return an *StringFilter")
+	
+	}
 
 	if !reflect.DeepEqual(filter, copy) {
 		t.Errorf("Clone did not produce an identical copy")

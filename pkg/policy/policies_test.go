@@ -25,7 +25,11 @@ func TestPoliciesClone(t *testing.T) {
 	err = policies.Add(p2)
 	require.NoError(t, err)
 
-	copy := policies.Clone().(*Policies)
+	cloneInterface := policies.Clone()
+	copy, ok := cloneInterface.(*Policies)
+	if !ok {
+		t.Errorf("Clone did not return an *Policies")
+	}
 
 	if !arePoliciesEqual(policies, copy) {
 		t.Errorf("Clone did not produce an identical copy")

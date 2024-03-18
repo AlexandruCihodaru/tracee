@@ -61,7 +61,7 @@ func (p *Policy) ContainerFilterEnabled() bool {
 		p.ContIDFilter.Enabled()
 }
 
-func (p *Policy) Clone() utils.Cloner {
+func (p *Policy) Clone() (utils.Cloner, error) {
 	if p == nil {
 		return nil
 	}
@@ -71,21 +71,51 @@ func (p *Policy) Clone() utils.Cloner {
 	n.ID = p.ID
 	n.Name = p.Name
 	maps.Copy(n.EventsToTrace, p.EventsToTrace)
-	n.UIDFilter = p.UIDFilter.Clone().(*filters.UIntFilter[uint32])
-	n.PIDFilter = p.PIDFilter.Clone().(*filters.UIntFilter[uint32])
-	n.NewPidFilter = p.NewPidFilter.Clone().(*filters.BoolFilter)
-	n.MntNSFilter = p.MntNSFilter.Clone().(*filters.UIntFilter[uint64])
-	n.PidNSFilter = p.PidNSFilter.Clone().(*filters.UIntFilter[uint64])
-	n.UTSFilter = p.UTSFilter.Clone().(*filters.StringFilter)
-	n.CommFilter = p.CommFilter.Clone().(*filters.StringFilter)
-	n.ContFilter = p.ContFilter.Clone().(*filters.BoolFilter)
-	n.NewContFilter = p.NewContFilter.Clone().(*filters.BoolFilter)
-	n.ContIDFilter = p.ContIDFilter.Clone().(*filters.StringFilter)
-	n.RetFilter = p.RetFilter.Clone().(*filters.RetFilter)
-	n.ArgFilter = p.ArgFilter.Clone().(*filters.ArgFilter)
-	n.ContextFilter = p.ContextFilter.Clone().(*filters.ContextFilter)
-	n.ProcessTreeFilter = p.ProcessTreeFilter.Clone().(*filters.ProcessTreeFilter)
-	n.BinaryFilter = p.BinaryFilter.Clone().(*filters.BinaryFilter)
+	if n.UIDFilter, err = cloneAndAssert[*UIntFilter[uint32]](p.UIDFilter); err != nil {
+		return err
+	}
+	if n.PIDFilter, err = cloneAndAssert[*UIntFilter[uint32]](p.PIDFilter); err != nil {
+		return err
+	}
+	if n.NewPidFilter, err = cloneAndAssert[*BoolFilter](p.NewPidFilter); err != nil {
+		return err
+	}
+	if n.MntNSFilter, err = cloneAndAssert[*UIntFilter[uint64]](p.MntNSFilter); err != nil {
+		return err
+	}
+	if n.PidNSFilter, err = cloneAndAssert[*UIntFilter[uint64]](p.PidNSFilter); err != nil {
+		return err
+	}
+	if n.UTSFilter, err = cloneAndAssert[*StringFilter](p.UTSFilter); err != nil {
+		return err
+	}
+	if n.CommFilter, err = cloneAndAssert[*StringFilter](p.CommFilter); err != nil {
+		return err
+	}
+	if n.ContFilter, err = cloneAndAssert[*BoolFilter](p.ContFilter); err != nil {
+		return err
+	}
+	if n.NewContFilter, err = cloneAndAssert[*BoolFilter](p.NewContFilter); err != nil {
+		return err
+	}
+	if n.ContIDFilter, err = cloneAndAssert[*StringFilter](p.ContIDFilter); err != nil {
+		return err
+	}
+	if n.RetFilter, err = cloneAndAssert[*RetFilter](p.RetFilter); err != nil {
+		return err
+	}
+	if n.ArgFilter, err = cloneAndAssert[*ArgFilter](p.ArgFilter); err != nil {
+		return err
+	}
+	if n.ContextFilter, err = cloneAndAssert[*ContextFilter](p.ContextFilter); err != nil {
+		return err
+	}
+	if n.ProcessTreeFilter, err = cloneAndAssert[*ProcessTreeFilter](p.ProcessTreeFilter); err != nil {
+		return err
+	}
+	if n.BinaryFilter, err = cloneAndAssert[*BinaryFilter](p.BinaryFilter); err != nil {
+		return err
+	}
 	n.Follow = p.Follow
 
 	return n
